@@ -18,10 +18,10 @@ import multiprocessing
 import numpy as np
 import tensorflow as tf
 import keras
-import keras.backend as K
-import tf.keras.layers as KL
+import tensorflow.keras.backend as K
+import tensorflow.keras.layers as KL
 import keras.engine as KE
-import keras.models as KM
+import tensorflow.keras.models as KM
 
 from mrcnn import utils
 
@@ -948,7 +948,8 @@ def fpn_classifier_graph(rois, feature_maps, image_meta,
                            name='mrcnn_bbox_fc')(shared)
     # Reshape to [batch, num_rois, NUM_CLASSES, (dy, dx, log(dh), log(dw))]
     s = K.int_shape(x)
-    mrcnn_bbox = KL.Reshape((s[1], num_classes, 4), name="mrcnn_bbox")(x)
+    #mrcnn_bbox = KL.Reshape((s[1], num_classes, 4), name="mrcnn_bbox")(x)
+    mrcnn_bbox = KL.Reshape((-1, num_classes, 4), name="mrcnn_bbox")(x) #changes from keras to tf.keras
 
     return mrcnn_class_logits, mrcnn_probs, mrcnn_bbox
 
